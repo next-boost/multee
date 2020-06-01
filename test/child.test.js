@@ -1,11 +1,11 @@
 const { expect } = require('chai')
-const demoWorker = require('./demo-worker')
+const demoChild = require('./demo-child')
 
-describe('worker threads', () => {
+describe('child process', () => {
   let demo
 
   before(() => {
-    demo = demoWorker()
+    demo = demoChild()
   })
 
   it('simple string', async () => {
@@ -32,7 +32,8 @@ describe('worker threads', () => {
       name: Buffer.from('John'),
     }
     const rv = await demo.echo(input)
-    expect(rv).to.deep.eq(input)
+    expect(Buffer.from(rv.name)).to.deep.eq(input.name)
+    expect(rv.age).to.eq(input.age)
   })
 
   it('async', async () => {
