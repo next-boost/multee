@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid')
 const { Worker, parentPort, isMainThread } = require('worker_threads')
+const { v4: uuidv4 } = require('uuid')
 
 const handlers = {}
 const waitingForResolve = {}
@@ -17,7 +17,6 @@ if (!isMainThread) {
 
 function TSWorker(filename) {
   if (filename.endsWith('.ts')) {
-    console.log('name', filename)
     return new Worker(require.resolve('./ts-wrap.js'), {
       workerData: filename,
     })

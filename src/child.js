@@ -1,5 +1,5 @@
 const cp = require('child_process')
-const { v4: uuid_v4 } = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 
 function fork(modulePath) {
   const isTS = modulePath.endsWith('.ts')
@@ -32,7 +32,7 @@ exports.start = (filename) => {
 
 exports.createHandler = (name, worker) => {
   const caller = (sub) => (args) => {
-    const uuid = uuid_v4()
+    const uuid = uuidv4()
     sub.send({ name, uuid, args })
     return new Promise((r) => (waitingForResolve[uuid] = r))
   }
