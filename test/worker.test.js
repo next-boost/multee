@@ -26,6 +26,20 @@ describe('worker', () => {
     expect(rv).to.deep.eq(input)
   })
 
+  it('echo with buffer', async () => {
+    const input = {
+      age: 33,
+      name: Buffer.from('John'),
+    }
+    const rv = await demo.echo(input)
+    expect(rv).to.deep.eq(input)
+  })
+
+  it('async', async () => {
+    const rv = await demo.async()
+    expect(rv).to.eq(1)
+  })
+
   after(() => {
     demo.close()
   })
