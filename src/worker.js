@@ -29,6 +29,7 @@ exports.start = (filename) => {
   const worker = TSWorker(filename)
   worker.on('message', (payload) => {
     const cb = waitingForResolve[payload.uuid]
+    delete waitingForResolve[payload.uuid]
     cb(payload.result)
   })
   return worker

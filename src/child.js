@@ -25,6 +25,7 @@ exports.start = (filename) => {
   const sub = fork(filename)
   sub.on('message', (payload) => {
     const cb = waitingForResolve[payload.uuid]
+    delete waitingForResolve[payload.uuid]
     cb(payload.result)
   })
   return sub
