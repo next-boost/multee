@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 const demoWorker = require('./demo-worker')
 
-describe('worker threads', () => {
+describe('worker_threads', () => {
   let demo
 
   before(() => {

@@ -1,11 +1,11 @@
 const { expect } = require('chai')
-const demoChild = require('./demo-child')
+const demoWorker = require('./demo-child')
 
-describe('child process', () => {
+describe('child_process', () => {
   let demo
 
   before(() => {
-    demo = demoChild()
+    demo = demoWorker()
   })
 
   it('simple string', async () => {

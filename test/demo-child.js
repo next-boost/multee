@@ -1,23 +1,27 @@
-const { createHandler, start } = require('../src/child')
+const Multee = require('../src/index')
 
-const test = createHandler('test', (name) => {
+const multee = Multee('child')
+
+const test = multee.createHandler('test', (name) => {
   return `hello ${name}`
 })
 
-const echo = createHandler('echo', (args) => {
+const echo = multee.createHandler('echo', (args) => {
   return args
 })
 
-const asyncJob = createHandler('async', () => {
-  return 1
+const asyncJob = multee.createHandler('async', async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(1), 100)
+  })
 })
 
 module.exports = function main() {
-  const child = start(__filename)
+  const worker = multee.start(__filename)
   return {
-    test: test(child),
-    echo: echo(child),
-    async: asyncJob(child),
-    close: () => child.kill(),
+    test: test(worker),
+    echo: echo(worker),
+    async: asyncJob(worker),
+    close: () => worker.terminate(),
   }
 }
