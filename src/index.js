@@ -27,6 +27,38 @@ function fork(modulePath) {
   return sub
 }
 
+const start = (buildSub) => (script) => {
+  const sub = buildSub(script)
+  sub.on('message', (payload) => {
+    const cb = waitingForResolve[payload.uuid]
+    delete waitingForResolve[payload.uuid]
+    cb(payload.result)
+  })
+  return sub
+}
+
+const createHandler = (name, handler) => {
+  const caller = (sub) => (args) => {
+    const uuid = uuidv4()
+    sub.send({ name, uuid, args })
+    return new Promise((r) => (waitingForResolve[uuid] = r))
+  }
+  handlers[name] = handler
+  return caller
+}
+
+const listen = (isSub, bridge) => {
+  if (!isSub) return
+  bridge.on('message', async (payload) => {
+    const worker = handlers[payload.name]
+    const rv = await worker(payload.args)
+    bridge.send({
+      uuid: payload.uuid,
+      result: rv,
+    })
+  })
+}
+
 module.exports = (type) => {
   let isSub, buildSub, bridge
   if (type === 'worker') {
@@ -40,36 +72,6 @@ module.exports = (type) => {
     bridge = process
   }
 
-  if (isSub) {
-    bridge.on('message', async (payload) => {
-      const worker = handlers[payload.name]
-      const rv = await worker(payload.args)
-      bridge.send({
-        uuid: payload.uuid,
-        result: rv,
-      })
-    })
-  }
-
-  const start = (script) => {
-    const sub = buildSub(script)
-    sub.on('message', (payload) => {
-      const cb = waitingForResolve[payload.uuid]
-      delete waitingForResolve[payload.uuid]
-      cb(payload.result)
-    })
-    return sub
-  }
-
-  const createHandler = (name, handler) => {
-    const caller = (sub) => (args) => {
-      const uuid = uuidv4()
-      sub.send({ name, uuid, args })
-      return new Promise((r) => (waitingForResolve[uuid] = r))
-    }
-    handlers[name] = handler
-    return caller
-  }
-
-  return { start, createHandler }
+  listen(isSub, bridge)
+  return { start: start(buildSub), createHandler }
 }
