@@ -17,17 +17,22 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node: [ '12', '14' ]
+
+    name: Testing on node.js v${{ matrix.node }}
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
     - name: Install npm dependencies
       run: npm install
-
-    # - name: Run lint
-    #   run: npm run lint
-
     - name: Run tests
       run: npm run test
 
