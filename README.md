@@ -1,4 +1,4 @@
-[![CI](https://github.com/rjyo/multee/workflows/CI/badge.svg)](https://github.com/rjyo/multee/actions)
+[![CI](https://github.com/rjyo/multee/workflows/CI/badge.svg)](https://github.com/rjyo/multee/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/a30197a15f88eb66c546/maintainability)](https://codeclimate.com/github/rjyo/multee/maintainability)
 
 # multee
 
