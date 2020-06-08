@@ -1,16 +1,15 @@
-const { expect } = require('chai')
 const demoWorker = require('./demo-child')
 
 describe('child_process', () => {
   let demo
 
-  before(() => {
+  beforeAll(() => {
     demo = demoWorker()
   })
 
   it('simple string', async () => {
     const rv = await demo.test('me')
-    expect(rv).eq('hello me')
+    expect(rv).toEqual('hello me')
   })
 
   it('echo object', async () => {
@@ -23,7 +22,7 @@ describe('child_process', () => {
       },
     }
     const rv = await demo.echo(input)
-    expect(rv).to.deep.eq(input)
+    expect(rv).toEqual(input)
   })
 
   it('echo with buffer', async () => {
@@ -32,16 +31,16 @@ describe('child_process', () => {
       name: Buffer.from('John'),
     }
     const rv = await demo.echo(input)
-    expect(Buffer.from(rv.name)).to.deep.eq(input.name)
-    expect(rv.age).to.eq(input.age)
+    expect(Buffer.from(rv.name)).toEqual(input.name)
+    expect(rv.age).toEqual(input.age)
   })
 
   it('async', async () => {
     const rv = await demo.async()
-    expect(rv).to.eq(1)
+    expect(rv).toEqual(1)
   })
 
-  after(() => {
+  afterAll(() => {
     demo.close()
   })
 })

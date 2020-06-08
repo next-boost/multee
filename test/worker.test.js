@@ -1,16 +1,15 @@
-const { expect } = require('chai')
 const demoWorker = require('./demo-worker')
 
 describe('worker_threads', () => {
   let demo
 
-  before(() => {
+  beforeAll(() => {
     demo = demoWorker()
   })
 
   it('simple string', async () => {
     const rv = await demo.test('me')
-    expect(rv).eq('hello me')
+    expect(rv).toEqual('hello me')
   })
 
   it('echo object', async () => {
@@ -23,7 +22,7 @@ describe('worker_threads', () => {
       },
     }
     const rv = await demo.echo(input)
-    expect(rv).to.deep.eq(input)
+    expect(rv).toEqual(input)
   })
 
   it('echo with buffer', async () => {
@@ -32,15 +31,17 @@ describe('worker_threads', () => {
       name: Buffer.from('John'),
     }
     const rv = await demo.echo(input)
-    expect(rv).to.deep.eq(input)
+    expect(rv).toHaveProperty('age', 33)
+    expect(rv).toHaveProperty('name')
+    expect(Buffer.from(rv.name)).toEqual(input.name)
   })
 
   it('async', async () => {
     const rv = await demo.async()
-    expect(rv).to.eq(1)
+    expect(rv).toEqual(1)
   })
 
-  after(() => {
+  afterAll(() => {
     demo.close()
   })
 })
