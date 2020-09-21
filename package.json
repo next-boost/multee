@@ -1,6 +1,6 @@
 {
   "name": "multee",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Turn node's multitasking modules, child_process and worker_threads into simple async functions",
   "main": "index.js",
   "scripts": {
