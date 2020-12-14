@@ -15,15 +15,15 @@
   },
   "homepage": "https://github.com/rjyo/multee",
   "devDependencies": {
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.1",
+    "@types/jest": "^26.0.19",
+    "@types/node": "^14.14.13",
     "@types/uuid": "^8.3.0",
-    "eslint": "^7.9.0",
-    "jest": "^26.4.2",
-    "ts-node": "^9.0.0"
+    "eslint": "^7.15.0",
+    "jest": "^26.6.3",
+    "ts-node": "^9.1.1"
   },
   "dependencies": {
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.2"
   },
   "keywords": [
     "child_process",
