@@ -1,11 +1,11 @@
 {
   "name": "multee",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Turn node's multitasking modules, child_process and worker_threads into simple async functions",
   "main": "index.js",
   "scripts": {
     "test": "npx jest",
-    "dist": "mkdir -p dist && cp src/*.* package.json dist/ && cd dist/ && npm publish"
+    "dist": "mkdir -p dist && cp src/*.* package.json README.md dist/ && cd dist/ && npm publish"
   },
   "author": "Rakuraku Jyo",
   "license": "MIT",
