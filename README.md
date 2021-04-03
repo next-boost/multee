@@ -14,7 +14,11 @@ The code will look like below without `multee`
 // worker.js
 process.on('message', (msg) => {
   // do heavy load job
-  process.send(job_result)
+  let result = 0
+  for (let i = 0; i < 100000000; i++) {
+    result += heavy_and_return_same(i)
+  }
+  process.send(result)
 })
 
 // master.js
@@ -43,11 +47,16 @@ const multee = Multee('worker') // worker_threads, use 'child' for child_process
 
 export const jobA = multee.createHandler('jobA', () => {
   // do the heavy load here
+  let result = 0
+  for (let i = 0; i < 100; i++) {
+    result += heavy_and_return_same(i)
+  }
+  return result
 })
 
 module.exports = () => {
   const worker = multee.start(__filename)
-  return { test: jobA(worker) }
+  return { result: jobA(worker) }
 }
 
 // master.js
@@ -55,6 +64,8 @@ async function partA() {
   const worker = require('./worker')
   const result = await worker.jobA()
   // do the rest with result
+  console.log(result)
+  // { result: 4950 }
 }
 ```
 
