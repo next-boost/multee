@@ -43,9 +43,9 @@ And with `multee`, it's just as easy as calling an async function.
 ```javascript
 // worker.js
 const Multee = require('multee')
-const multee = Multee('worker') // worker_threads, use 'child' for child_process
+const multee = Multee('worker') // 'worker' for worker_threads | 'child' for child_process
 
-export const jobA = multee.createHandler('jobA', () => {
+const jobA = multee.createHandler('jobA', () => {
   // do the heavy load here
   let result = 0
   for (let i = 0; i < 100; i++) {
@@ -54,18 +54,25 @@ export const jobA = multee.createHandler('jobA', () => {
   return result
 })
 
-module.exports = () => {
-  const worker = multee.start(__filename)
-  return { result: jobA(worker) }
+module.exports = {
+  start: () => {
+    const worker = multee.start(__filename)
+    return {
+      test: jobA(worker),
+      worker: worker
+    }
+  }
 }
 
 // master.js
 async function partA() {
   const worker = require('./worker')
-  const result = await worker.jobA()
+  const test = worker.start()
+  const result = await test.test()
   // do the rest with result
   console.log(result)
   // { result: 4950 }
+  test.worker.terminate()
 }
 ```
 
