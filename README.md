@@ -65,7 +65,7 @@ module.exports = {
 async function partA() {
   const worker = require('./worker')
   const test = worker.start()
-  const result = await worker.test()
+  const result = await test.test()
   // do the rest with result
   console.log(result)
   // { result: 'jobA' }
