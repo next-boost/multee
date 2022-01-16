@@ -47,8 +47,11 @@ const multee = Multee('worker') // 'worker' for worker_threads | 'child' for chi
 
 const jobA = multee.createHandler('jobA', () => {
   // do the heavy load here
-  console.log('jobA')
-  return 'jobA'
+  let result = 0
+  for (let i = 0; i < 100; i++) {
+    result += heavy_and_return_same(i)
+  }
+  return result
 })
 
 module.exports = {
@@ -68,7 +71,7 @@ async function partA() {
   const result = await test.test()
   // do the rest with result
   console.log(result)
-  // { result: 'jobA' }
+  // { result: 4950 }
   test.worker.terminate()
 }
 ```
