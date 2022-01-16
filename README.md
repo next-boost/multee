@@ -49,7 +49,7 @@ const jobA = multee.createHandler('jobA', () => {
   // do the heavy load here
   console.log('jobA')
   return 'jobA'
-});
+})
 
 module.exports = {
   start: () => {
